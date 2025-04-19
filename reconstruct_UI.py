@@ -9,7 +9,7 @@ from UI.SignalLabel import SignalLabel
 from UI.FolderLabel import FolderLabel
 from UI.VideoLabel import VideoLabel
 from UI.MointerLable import Moniter
-from core.VideoThread import VideoStreamThread
+# from core.VideoThread import VideoStreamThread
 from core.ImageThread import ImageThread
 
 
@@ -29,7 +29,6 @@ class ImageDetectionUI(QMainWindow):
     VideoButtonsShow = False
     MoniterButtonsShow = False
     image = None
-    # VideoThread = VideoDetectionThread()
 
     model_paths = [
         r"runs\Discuss\Discuss\weights\best.pt",
@@ -70,6 +69,8 @@ class ImageDetectionUI(QMainWindow):
     def load_image_model(self):
         self.imageThread.load_weights(self.models)
         self.imageThread.start()
+        # if self.signal_label.get_model_stauts():
+        #     self.image_load.setStyleSheet("background-color: rgb(255, 0, 0);")
 
     def start_image_folder(self):
         self.imageThread.setMode(True)
@@ -172,7 +173,6 @@ class ImageDetectionUI(QMainWindow):
         self.video_start.clicked.connect(self.video_label.start_predict) # 开始视频流
         self.video_end.clicked.connect(self.video_label.close_video) # 关闭视频流
         self.video_button.clicked.connect(self.showVideo) # 显示视频检测界面
-
         
         self.moniter_load.clicked.connect(self.moniter_label.load_models) # 加载监控模型权重
         self.start_video.clicked.connect(self.moniter_label.open_moniter) # 打开监控
@@ -254,6 +254,7 @@ class ImageDetectionUI(QMainWindow):
                     mo.show()
                 except:
                     pass
+    
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

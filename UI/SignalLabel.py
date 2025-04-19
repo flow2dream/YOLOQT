@@ -6,7 +6,10 @@ from core.ImageThread import ImageThread
 class SignalLabel(QLabel):
     _instance = None
     
-    def __init__(self, parent=None, selectImage:QPushButton=None, selectFolder:QPushButton=None, models=[]):
+    def __init__(self, parent=None, 
+                 selectImage:QPushButton=None, 
+                 selectFolder:QPushButton=None, 
+                 models=[]):
         super().__init__(parent)
         self.imageThread = ImageThread.get_instance(cls=ImageThread)
         self.models = models
@@ -83,3 +86,7 @@ class SignalLabel(QLabel):
             self.selectImage.hide()
             self.selectFolder.hide()
             self.showCurrentImage(file_path)
+    
+    def get_model_stauts(self):
+        return not self.imageThread.models == []
+    
