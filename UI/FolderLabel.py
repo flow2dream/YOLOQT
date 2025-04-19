@@ -34,13 +34,18 @@ class FolderLabel(QLabel):
         self.setFixedSize(self.parent.width(),
                         self.parent.height())
         if image:
-            self.images[self.index] = image
+            self.images[self.index]["image"] = image
             self.image = image
         else:
-            self.image = QPixmap(self.images[self.index])
+            if self.images[self.index]["image"] is None:
+                self.image = QPixmap(self.images[self.index]["path"])
+                
+            else:
+                self.image = self.images[self.index]["image"]
         self.image = self.image.scaled(self.width(),
             int(self.width() * self.image.height() / self.image.width()))   
         self.setPixmap(self.image)
+        self.images[self.index]["image"] = self.image
         self.show()
     
     def select_Folder(self):
@@ -52,7 +57,7 @@ class FolderLabel(QLabel):
     
     def getCurrentImage(self):
         if self.image:
-            return self.image
+            return self.images[self.index]
         return None
 
     def mousePressEvent(self, event):

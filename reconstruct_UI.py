@@ -82,7 +82,8 @@ class ImageDetectionUI(QMainWindow):
 
     def start_image_folder(self):
         self.imageThread.setMode(True)
-        image = self.folder_label.getCurrentImage()
+        result = self.folder_label.getCurrentImage()
+        image = result["image"]
         if image is None:
             return
         self.imageThread.get_image_signal.emit(image)

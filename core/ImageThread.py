@@ -60,7 +60,6 @@ class ImageThread(QThread):
                     self.send_image_folder.emit(cv_to_qpixmap(annotated_img))
                 else:
                     self.send_image_signal.emit(cv_to_qpixmap(annotated_img))
-                # self.send_image_signal.emit(self.cv_to_qpixmap(annotated_img))
                 self.image = None
             
     def load_weights(self, models:list=None):
