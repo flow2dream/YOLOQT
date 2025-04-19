@@ -51,7 +51,7 @@ class MoniterStreamThread(QThread):
                 try:
                     merged_boxes = merge_boxes(cls_dict, threshold=50)
                     annotated_img = draw_boxes_on_image(frame, merged_boxes)
-                except:
+                except IndexError:
                     annotated_img = frame
             else:
                 """

@@ -50,9 +50,12 @@ class ImageThread(QThread):
                             class_id = item[5]
                             class_name = names[int(class_id)]
                             cls_dict[tuple(item[:4])] = class_name
-
-                merged_boxes = merge_boxes(cls_dict, threshold=50)
-                annotated_img = draw_boxes_on_image(image, merged_boxes)
+                try:
+                    merged_boxes = merge_boxes(cls_dict, threshold=50)
+                    print(merged_boxes)
+                    annotated_img = draw_boxes_on_image(image, merged_boxes)
+                except IndexError:
+                    annotated_img = image
                 if self.isFolder:
                     self.send_image_folder.emit(cv_to_qpixmap(annotated_img))
                 else:

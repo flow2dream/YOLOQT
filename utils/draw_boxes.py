@@ -1,11 +1,16 @@
 import cv2
 
 color_map = {
-    'read': (0, 255, 0),  # 绿色
-    'write': (255, 0, 0),  # 蓝色
+    'bow head': (0, 255, 0),  # 绿色
+    'turn head': (255, 0, 0),  # 蓝色
     'discuss': (0, 0, 255),  # 红色
-    'stand': (255, 255, 0),  # 黄色
-    'talk': (0, 255, 255),  # 青色
+    'talk': (255, 255, 0),  # 黄色
+    'hand-raise': (0, 255, 255),  # 青色
+    'write': (255, 0, 255),  # 洋红色
+    'use phone': (128, 0, 128),  # 紫色
+    'reading': (255, 165, 0),  # 橙色
+    'lean table': (0, 128, 128),  # 深绿色
+    'stand': (128, 128, 0),  # 橄榄色
 }
 
 def draw_boxes_on_image(image, box_dict):

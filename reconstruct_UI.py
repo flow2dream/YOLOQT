@@ -36,10 +36,10 @@ class ImageDetectionUI(QMainWindow):
     image = None
 
     model_paths = [
-        r"runs\Discuss\Discuss\weights\best.pt",
-        r"runs\Handrise-Read-write\Handrise-Read-write\weights\best.pt",
-        r"runs\Stand\Stand\weights\best.pt",
-        r"runs\Talk\Talk\weights\best.pt"
+        r"retrain_runs\bow head_turn head\bow head_turn head\weights\best.pt",
+        r"retrain_runs\discuss_talk\discuss_talk\weights\best.pt",
+        r"retrain_runs\hand-raise_write_use phone\hand-raise_write_use phone\weights\best.pt",
+        # r"runs\Talk\Talk\weights\best.pt"
     ]
     def __init__(self):
         super().__init__()
