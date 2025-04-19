@@ -19,7 +19,7 @@ class VideoLabel(QLabel):
         self.initMenu()
 
     def initMenu(self):
-                    # 创建菜单栏
+            # 创建菜单栏
             self.menu = QMenu(self)
             # 创建菜单项
             action1 = QAction("关闭", self)
@@ -35,10 +35,46 @@ class VideoLabel(QLabel):
 
             # 将菜单项添加到菜单栏
             self.menu.addAction(action1)
-            # self.menu.addAction(action2)
             self.menu.addAction(action3)
             self.menu.addAction(action4)
-            # self.menu.addAction(action5)
+            self.menu.setStyleSheet("""QMenu {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1a1a2e, stop:1 #0f0c29);
+    color: #e0e0ff;
+    border: 1px solid #6a00ff;
+    padding: 8px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+}
+
+QMenu::item {
+    padding: 8px 30px 8px 20px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+QMenu::item:selected {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #3a1e6e, stop:1 #2a1459);
+    border: 1px solid #8a2be2;
+    color: #ffffff;
+}
+
+QMenu::icon {
+    padding-left: 10px;
+}
+
+QMenu::separator {
+    height: 1px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #6a00ff, stop:1 #8a2be2);
+    margin: 8px 0;
+}
+
+QMenu::item:disabled {
+    color: #666699;
+}""")
 
     def select_video(self):
         video_path, _ = QFileDialog.getOpenFileName(self, "选择视频", "", "视频文件 (*.mp4 *.avi *.mov)")

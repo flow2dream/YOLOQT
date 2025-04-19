@@ -29,6 +29,8 @@ class MoniterStreamThread(QThread):
                 print("Error: Could not open video.")
                 self.capture.release()
                 break
+            if not self.is_continue:
+                continue
             ret, frame = self.capture.read()
             if not ret:
                 print("Error: Could not read frame.")
@@ -65,8 +67,8 @@ class MoniterStreamThread(QThread):
         """
         if self.capture is None:
             self.capture = cv2.VideoCapture(0)
-        
         self.is_running = True
+        self.is_continue = True
         return super().start()
     
     def load_models(self, models:list=[]):
@@ -81,6 +83,7 @@ class MoniterStreamThread(QThread):
         """
         self.is_running = True
         self.open = True
+        self.is_continue = True
 
     def stop(self):
         """
@@ -92,4 +95,13 @@ class MoniterStreamThread(QThread):
         if self.capture:
             self.capture.release()
             self.capture = None
+    def stop_frame(self):
+        """
+        top the stream
+        """
+        self.is_continue = False
+    
+    def continue_frame(self):
+        self.is_continue = True
+    
         

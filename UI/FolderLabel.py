@@ -73,7 +73,44 @@ class FolderLabel(QLabel):
             menu.addAction(action1)
             menu.addAction(action2)
             menu.addAction(action3)
+            menu.setStyleSheet("""QMenu {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1a1a2e, stop:1 #0f0c29);
+    color: #e0e0ff;
+    border: 1px solid #6a00ff;
+    padding: 8px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+}
 
+QMenu::item {
+    padding: 8px 30px 8px 20px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+QMenu::item:selected {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #3a1e6e, stop:1 #2a1459);
+    border: 1px solid #8a2be2;
+    color: #ffffff;
+}
+
+QMenu::icon {
+    padding-left: 10px;
+}
+
+QMenu::separator {
+    height: 1px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #6a00ff, stop:1 #8a2be2);
+    margin: 8px 0;
+}
+
+QMenu::item:disabled {
+    color: #666699;
+}""")
             # 在鼠标点击位置显示菜单栏
             menu.exec_(self.mapToGlobal(event.pos()))
     
