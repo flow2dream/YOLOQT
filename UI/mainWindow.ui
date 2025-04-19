@@ -20,12 +20,435 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-   #display {
-	border: 1px solid black;
+   <string notr="true">#MainWindow {
+    background-color: #0F1A3A;
+    background-image: radial-gradient(circle, #1E3A8A 15%, transparent 15%),
+                      radial-gradient(circle, #1E3A8A 15%, transparent 15%);
+    background-position: 0 0, 20px 20px;
+    border: 1px solid #13274B;
+    border-radius: 8px;
+            
+}
+#MainWindow::title {
+    background-color: #0F1A3A;
+            
+}
+#MainWindow:hover {
+	    background-color: #13274B;
+    border: 1px solid #1E3A8A;
 }
 #option {
-	border: 1px solid black;
+border: 1px solid #2E4372;
+}
+#display {
+border: 1px solid #2E4372;
+}
+#start_video {
+	background-color: #2C3E50;
+    border: 2px solid #34495E;
+    border-radius: 100px;
+    color: #ECF0F1;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 200px;
+    min-height: 200px;
+    text-align: center;
+    qproperty-iconSize: 32px;
+}
+#start_video:hover {
+    background-color: #34495E;
+    border: 2px solid #2C3E50;
+}
+#start_video:pressed {
+    background-color: #1F2B38;
+    border: 2px solid #2C3E50;
+}
+
+#select_image {
+	background-color: #2C3E50;
+    border: 2px solid #34495E;
+    border-radius: 8px;
+    color: #ECF0F1;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 24px;
+    min-width: 100px;
+    min-height: 100px;
+    text-align: center;
+    qproperty-iconSize: 32px;
+}
+#select_image:hover {
+    background-color: #34495E;
+    border: 2px solid #2C3E50;
+}
+#select_image:pressed {
+    background-color: #1F2B38;
+    border: 2px solid #2C3E50;
+}
+
+#select_foler {
+	background-color: #2C3E50;
+    border: 2px solid #34495E;
+    border-radius: 8px;
+    color: #ECF0F1;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 24px;
+    min-width: 100px;
+    min-height: 100px;
+    text-align: center;
+    qproperty-iconSize: 32px;
+}
+#select_foler:hover {
+    background-color: #34495E;
+    border: 2px solid #2C3E50;
+}
+
+#select_foler:pressed {
+    background-color: #1F2B38;
+    border: 2px solid #2C3E50;
+}
+
+#select_video {
+	background-color: #2C3E50;
+    border: 2px solid #34495E;
+    border-radius: 8px;
+    color: #ECF0F1;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 24px;
+    min-width: 100px;
+    min-height: 100px;
+    text-align: center;
+    qproperty-iconSize: 32px;
+}
+#select_video:hover {
+    background-color: #34495E;
+    border: 2px solid #2C3E50;
+}
+
+#select_video:pressed {
+    background-color: #1F2B38;
+    border: 2px solid #2C3E50;
+}
+
+#image_button {
+            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a237e, stop:0.3 #283593, stop:0.6 #3949ab, stop:1 #536dfe);
+            color: #ffffff;
+            border: 2px solid #40c4ff;
+            border-radius: 5px;
+            font: bold 16px 'Arial';
+            padding: 10px 20px;
+            text-transform: uppercase;
+            
+}
+#image_button:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #283593, stop:0.3 #3949ab, stop:0.6 #536dfe, stop:1 #7c4dff);
+            border: 2px solid #64ffda;
+}
+#image_button:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #0d47a1, stop:1 #1a237e);
+            border: 2px solid #00bcd4;
+            padding: 12px 22px 8px 18px;
+}
+#video_button {
+            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a237e, stop:0.3 #283593, stop:0.6 #3949ab, stop:1 #536dfe);
+            color: #ffffff;
+            border: 2px solid #40c4ff;
+            border-radius: 5px;
+            font: bold 16px 'Arial';
+            padding: 10px 20px;
+            text-transform: uppercase;
+            
+}
+#video_button:hover {
+		            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #283593, stop:0.3 #3949ab, stop:0.6 #536dfe, stop:1 #7c4dff);
+            border: 2px solid #64ffda;
+}
+#video_button:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #0d47a1, stop:1 #1a237e);
+            border: 2px solid #00bcd4;
+            padding: 12px 22px 8px 18px;
+}
+#moniter_button {
+            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a237e, stop:0.3 #283593, stop:0.6 #3949ab, stop:1 #536dfe);
+            color: #ffffff;
+            border: 2px solid #40c4ff;
+            border-radius: 5px;
+            font: bold 16px 'Arial';
+            padding: 10px 20px;
+            text-transform: uppercase;
+            
+}
+#moniter_button:hover {
+            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #283593, stop:0.3 #3949ab, stop:0.6 #536dfe, stop:1 #7c4dff);
+            border: 2px solid #64ffda;
+}
+#moniter_button:pressed {
+            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #0d47a1, stop:1 #1a237e);
+            border: 2px solid #00bcd4;
+            padding: 12px 22px 8px 18px;
+}
+
+#image_start {
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#image_start:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#image_start:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+
+            padding: 7px 13px 5px 11px;
+}
+#image_load {
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: red;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#image_load:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#image_load:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+
+            padding: 7px 13px 5px 11px;
+}
+#video_load {
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: red;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#video_load:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#video_load:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+
+            padding: 7px 13px 5px 11px;
+}
+#moniter_load {
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: red;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#moniter_load:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#moniter_load:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
+}
+#video_start {
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+
+}
+#video_start:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+
+}
+#video_start:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
+}
+#moniter_start {
+
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#moniter_start:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#moniter_start:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
+}
+#image_save {
+
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#image_save:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#image_save:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
+}
+#video_end {
+
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#video_end:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#video_end:pressed {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
+}
+#moniter_end {
+
+	        background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1a1a2f, stop:0.5 #16213e, stop:1 #1a237e);
+            color: #a0a0ff;
+            border: 1px solid #3a5f8c;
+            border-radius: 6px;
+            font: bold 12px 'Consolas';
+            padding: 6px 12px;
+            text-transform: uppercase;
+            
+}
+#moniter_end:hover {
+	            background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:0,
+                stop:0 #16213e, stop:1 #283593);
+            border: 1px solid #4a7faf;
+
+}
+#moniter_end:pressed {
+	         background-color: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #0f172a, stop:1 #1a1a2f);
+            border: 1px solid #2d4d6b;
+            padding: 7px 13px 5px 11px;
 }
 </string>
   </property>
@@ -58,6 +481,12 @@
           <layout class="QVBoxLayout" name="option_layout">
            <property name="spacing">
             <number>7</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
            </property>
            <item alignment="Qt::AlignHCenter">
             <widget class="QPushButton" name="image_button">
@@ -92,8 +521,11 @@
                <height>0</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
-              <string>加载模型</string>
+              <string>加载模型（未加载）</string>
              </property>
             </widget>
            </item>
@@ -169,7 +601,7 @@
               </size>
              </property>
              <property name="text">
-              <string>加载模型</string>
+              <string>加载模型(未加载)</string>
              </property>
             </widget>
            </item>
@@ -212,25 +644,6 @@
             </widget>
            </item>
            <item alignment="Qt::AlignHCenter">
-            <widget class="QPushButton" name="video_save">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>保存结果</string>
-             </property>
-            </widget>
-           </item>
-           <item alignment="Qt::AlignHCenter">
             <widget class="QPushButton" name="moniter_button">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -264,7 +677,7 @@
               </size>
              </property>
              <property name="text">
-              <string>加载模型</string>
+              <string>加载模型(未加载)</string>
              </property>
             </widget>
            </item>
@@ -303,6 +716,12 @@
              </property>
              <property name="text">
               <string>结束检测</string>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -354,8 +773,8 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>200</width>
-                     <height>200</height>
+                     <width>152</width>
+                     <height>128</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -392,8 +811,8 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>200</width>
-                     <height>200</height>
+                     <width>152</width>
+                     <height>128</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -403,7 +822,7 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>选择图片文件夹</string>
+                    <string>选择文件夹</string>
                    </property>
                   </widget>
                  </item>
@@ -441,8 +860,8 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>200</width>
-                     <height>200</height>
+                     <width>152</width>
+                     <height>128</height>
                     </size>
                    </property>
                    <property name="text">
@@ -469,32 +888,12 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>200</width>
-                   <height>200</height>
+                   <width>204</width>
+                   <height>204</height>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton{color: #606266;
-		background-color: #fff; 
-		border: 1px solid #dcdfe6;
-		border-radius: 100px;
-}
-QPushButton:hover{
-		color: #409eff;
-		border-color: #c6e2ff;
-		background-color: #ecf5ff
-}
-QPushButton:checked{
-		color: #409eff;
-		border-color: #c6e2ff;
-		background-color: #ecf5ff;
-}
-QPushButton:pressed{
-		color: #3a8ee6;
-		border-color: #3a8ee6;
-		background-color: #ecf5ff;
-}
-</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>打开摄像头</string>
@@ -513,36 +912,6 @@ QPushButton:pressed{
      </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1109</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>文件</string>
-    </property>
-    <addaction name="actionopen_image_folder"/>
-    <addaction name="actionopen_image_file"/>
-   </widget>
-   <widget class="QMenu" name="menu_2">
-    <property name="title">
-     <string>加载模型权重</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menu_3">
-    <property name="title">
-     <string>设置</string>
-    </property>
-   </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_2"/>
-   <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionopen_image_folder">

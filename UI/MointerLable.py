@@ -8,10 +8,11 @@ from utils.convert import cv_to_qpixmap
 class Moniter(QLabel):
     _instance = None
 
-    def __init__(self, parent=None, selectVideo=None, models=[]):
+    def __init__(self, parent=None, models=[], load_button=None):
         super().__init__(parent)
         self.parent = parent
         self.models = models
+        self.load_button = load_button
         self.moniter_thread:MoniterStreamThread = MoniterStreamThread()
         self.moniter_thread.frame_signal.connect(self.updateFrame)
         self.moniter_thread.finished.connect(self.close_capture)
@@ -32,9 +33,9 @@ class Moniter(QLabel):
         self.show()
 
 
-    def get_instance(cls, parent=None, selectVideo=None, models=[]):
+    def get_instance(cls, parent=None, models=[], load_button=None):
         if not cls._instance:
-            cls._instance = cls(parent, selectVideo, models)
+            cls._instance = cls(parent, models, load_button)
         return cls._instance
     
     def start_predict(self):
@@ -50,6 +51,9 @@ class Moniter(QLabel):
         """
         print("load models success")
         self.moniter_thread.load_models(self.models)
+        self.load_button.setStyleSheet("color: green;")
+        self.load_button.setText("加载成功")
+        self.load_button.setEnabled(False)
 
     def open_moniter(self):
         """

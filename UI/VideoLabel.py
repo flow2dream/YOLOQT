@@ -10,12 +10,12 @@ from utils.convert import cv_to_qpixmap
 class VideoLabel(QLabel):
     _instance = None
 
-    def __init__(self, parent=None, models=[]):
+    def __init__(self, parent=None, models=[], load_button:QPushButton=None):
         super().__init__(parent)
-        # self.selectVideo = selectVideo
         self.parent = parent
         self.models = models
-        self.video_thread:VideoStreamThread = None
+        self.video_thread:VideoStreamThread = VideoStreamThread("")
+        self.load_button = load_button
         self.initMenu()
 
     def initMenu(self):
@@ -56,9 +56,9 @@ class VideoLabel(QLabel):
             first_frame = self.video_thread.getFirstFrame()
             self.updateFrame(first_frame)
 
-    def get_instance(cls, parent=None,  models=[]):
+    def get_instance(cls, parent=None,  models=[], load_button:QPushButton=None):
         if not cls._instance:
-            cls._instance = cls(parent, models)
+            cls._instance = cls(parent, models, load_button)
         return cls._instance
 
     def updateFrame(self, frame:np.ndarray|QPixmap):
@@ -77,7 +77,7 @@ class VideoLabel(QLabel):
         self.show()
 
     def start_predict(self):
-        if self.video_thread is None:
+        if self.video_thread.video_path == "":
             QMessageBox.warning(self, "Warning", "请先选择视频！")
             return
         if self.video_thread.models == []:
@@ -91,13 +91,10 @@ class VideoLabel(QLabel):
         self.updateFrame(image)
     
     def load_models(self):
-        if self.video_thread is None:
-            QMessageBox.warning(self, "Warning", "请先选择视频！")
-            return
-        if self.models == []:
-            QMessageBox.warning(self, "Warning", "请先加载模型！")
-            return
         self.video_thread.load_weights(self.models)
+        self.load_button.setStyleSheet("color: green;")
+        self.load_button.setText("加载成功")
+        self.load_button.setEnabled(False)
         print("model is loaded successfully!")
     
     def close_video(self):
@@ -106,6 +103,7 @@ class VideoLabel(QLabel):
         self.video_thread.stop()
 
         self.video_thread.wait()
+        self.video_thread.video_path = ""
         self.hide()
 
     def mousePressEvent(self, event):

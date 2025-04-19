@@ -1,16 +1,20 @@
 import sys, os
-from PyQt5.QtWidgets import QApplication, QStackedWidget, QMainWindow, QVBoxLayout,  QPushButton, QFileDialog, QLabel, QMessageBox
+from PyQt5.QtWidgets import (QApplication, QStackedWidget, 
+                             QMainWindow, QVBoxLayout,  QPushButton, 
+                             QFileDialog, QLabel, QMessageBox, QWidget, QHBoxLayout)
 from ultralytics import YOLO
-from PyQt5.QtGui import QPixmap
-from PyQt5 import uic, QtCore
+from PyQt5.QtGui import QIcon
+from PyQt5 import uic
+from PyQt5.QtCore import Qt
 import logging
 
 from UI.SignalLabel import SignalLabel
 from UI.FolderLabel import FolderLabel
 from UI.VideoLabel import VideoLabel
 from UI.MointerLable import Moniter
-# from core.VideoThread import VideoStreamThread
 from core.ImageThread import ImageThread
+
+from UI.myButtons import CyberButton
 
 
 logger = logging.getLogger(__name__)
@@ -23,6 +27,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 IMAGE_EXTENSION = ['.jpg', '.jpeg', '.png']
+
 
 class ImageDetectionUI(QMainWindow):
     imageButtonShow = True
@@ -38,6 +43,7 @@ class ImageDetectionUI(QMainWindow):
     ]
     def __init__(self):
         super().__init__()
+
         self.load_models()
         self.imageThread = ImageThread.get_instance(cls=ImageThread)
         self.initOptionUI()
@@ -53,12 +59,13 @@ class ImageDetectionUI(QMainWindow):
                                                      selectImage=self.select_image,
                                                      selectFolder=self.select_foler)
         self.video_label = VideoLabel.get_instance(cls=VideoLabel, 
-                                                   parent=self.stack_display.widget(1), 
-                                                #    selectVideo=self.select_video, 
-                                                   models=self.models)
+                                                   parent=self.stack_display.widget(1),  
+                                                   models=self.models,
+                                                   load_button=self.video_load)
         self.moniter_label = Moniter.get_instance(cls=Moniter,
                                                   parent=self.stack_display.widget(2),
-                                                  models=self.models)
+                                                  models=self.models,
+                                                  load_button=self.moniter_load)
         self.initConnection()
         
     def load_models(self):
@@ -69,8 +76,9 @@ class ImageDetectionUI(QMainWindow):
     def load_image_model(self):
         self.imageThread.load_weights(self.models)
         self.imageThread.start()
-        # if self.signal_label.get_model_stauts():
-        #     self.image_load.setStyleSheet("background-color: rgb(255, 0, 0);")
+        self.image_load.setStyleSheet("color: green;")
+        self.image_load.setText("加载成功")
+        self.image_load.setEnabled(False)
 
     def start_image_folder(self):
         self.imageThread.setMode(True)
@@ -97,7 +105,7 @@ class ImageDetectionUI(QMainWindow):
         else:
             QMessageBox.warning(self, "Warning", "请先选择图片或文件夹！")
             return
-        
+    
     def initOptionUI(self):
         self.setWindowTitle("课堂行为检测")
         uic.loadUi("UI/mainWindow.ui", self)
@@ -107,28 +115,55 @@ class ImageDetectionUI(QMainWindow):
         self.image_button:QPushButton = self.image_button
         self.parentWidth = self.image_button.width()
         self.parentHeight = self.image_button.height()
-        self.image_load:QPushButton = self.image_load
+        """
+        replace the button of bar
+        """
+        optionLayout = self.findChild(QVBoxLayout, "option_layout")
+        old_button = self.findChild(QPushButton, "image_button")
+        index = optionLayout.indexOf(old_button)
+        optionLayout.removeWidget(old_button)
+        old_button.deleteLater()
+        self.image_button = CyberButton("图片检测", self.option, icon_path="assets/image_detect.png")
+        optionLayout.insertWidget(index, self.image_button, alignment=Qt.AlignHCenter)
+        self.image_button.setFixedSize(self.parentWidth, self.parentHeight)
 
+        optionLayout = self.findChild(QVBoxLayout, "option_layout")
+        old_button = self.findChild(QPushButton, "video_button")
+        index = optionLayout.indexOf(old_button)
+        optionLayout.removeWidget(old_button)
+        old_button.deleteLater()
+        self.video_button = CyberButton("视频检测", self.option, icon_path="assets/video_detect.png")
+        optionLayout.insertWidget(index, self.video_button, alignment=Qt.AlignHCenter)
+        self.video_button.setFixedSize(self.parentWidth, self.parentHeight)
+
+        optionLayout = self.findChild(QVBoxLayout, "option_layout")
+        old_button = self.findChild(QPushButton, "moniter_button")
+        index = optionLayout.indexOf(old_button)
+        optionLayout.removeWidget(old_button)
+        old_button.deleteLater()
+        self.moniter_button = CyberButton("实时监测", self.option, icon_path="assets/moniter_detect.png")
+        optionLayout.insertWidget(index, self.moniter_button, alignment=Qt.AlignHCenter)
+        self.moniter_button.setFixedSize(self.parentWidth, self.parentHeight)
+
+        
+        self.image_load:QPushButton = self.image_load
         self.image_start:QPushButton = self.image_start # 图片开始检测按钮
         self.image_save:QPushButton = self.image_save # 图片保存按钮
-        self.image_load.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.image_start.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.image_save.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
+        self.image_load.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
+        self.image_start.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
+        self.image_save.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
 
         # init button of video detection
         self.video_button:QPushButton = self.video_button
         self.video_load:QPushButton = self.video_load
         self.video_start:QPushButton = self.video_start
         self.video_end:QPushButton = self.video_end
-        self.video_save:QPushButton = self.video_save
-        self.video_load.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.video_start.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.video_end.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.video_save.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
+        self.video_load.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
+        self.video_start.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
+        self.video_end.setFixedSize(int(self.parentWidth*0.8), int(self.parentHeight*0.9))
         self.video_load.hide()
         self.video_start.hide()
         self.video_end.hide()
-        self.video_save.hide()
 
         # init button of moniter image detetcion
         self.moniter_button:QPushButton = self.moniter_button
@@ -138,15 +173,15 @@ class ImageDetectionUI(QMainWindow):
         self.moniter_start:QPushButton = self.moniter_start
         self.moniter_end:QPushButton = self.moniter_end
         
-        self.moniter_load.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.moniter_start.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        self.moniter_end.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
+        self.moniter_load.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.9))
+        self.moniter_start.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.9))
+        self.moniter_end.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.9))
         self.moniter_load.hide()
         self.moniter_start.hide()
         self.moniter_end.hide()
         self.buttons = {
-            "image": [self.image_load, self.image_start, self.image_save, self.image_save],
-            "video": [self.video_load, self.video_start, self.video_end, self.video_save],
+            "image": [self.image_load, self.image_start, self.image_save],
+            "video": [self.video_load, self.video_start, self.video_end],
             "moniter": [self.moniter_load, self.moniter_start, self.moniter_end]
         }
     
@@ -154,9 +189,13 @@ class ImageDetectionUI(QMainWindow):
         self.stack_display:QStackedWidget = self.stack_display
         self.stack_display.setCurrentIndex(0)
         self.select_image:QPushButton = self.select_image
+        self.select_image.setIcon(QIcon("assets/image.png"))
         self.select_foler:QPushButton = self.select_foler
+        self.select_foler.setIcon(QIcon("assets/folder.png"))
         self.select_video:QPushButton = self.select_video
+        self.select_video.setIcon(QIcon("assets/video.png"))
         self.start_video:QPushButton = self.start_video
+        self.start_video.setIcon(QIcon("assets/moniter.png"))
 
     def initConnection(self):
         self.imageThread.send_image_signal.connect(self.signal_label.get_predict_image) # 发送图片信号
@@ -254,10 +293,75 @@ class ImageDetectionUI(QMainWindow):
                     mo.show()
                 except:
                     pass
+
+class CustomTitleBar(QWidget):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent  # 主窗口引用
+        self.setup_ui()
+
+    def setup_ui(self):
+        # 标题栏布局
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)  # 移除边距
+
+        # 标题文本
+        self.title_label = QLabel("YOLO教室行为检测系统")
+        self.title_label.setStyleSheet("color: white; font-size: 20px;padding: 8px 8px;")
+        # self.title_label.setStyleSheet("")
+        self.setFixedHeight(35)
+        # 最小化、关闭按钮
+        self.btn_min = QPushButton("—")
+        self.btn_close = QPushButton("×")
+
+        # 设置按钮样式（使用 QSS）
+        button_style = """
+            QPushButton {
+                background-color: transparent;
+                color: white;
+                border: none;
+                font-size: 20px;
+                padding: 4px 8px;
+            }
+            QPushButton:hover {
+                background-color: #555555;
+            }
+            QPushButton#close:hover {
+                background-color: #ff0000;
+            }
+        """
+        self.btn_close.setObjectName("close")  # 单独标识关闭按钮
+        self.setStyleSheet(button_style)
+
+        # 添加到布局
+        layout.addWidget(self.title_label)
+        layout.addStretch()
+        layout.addWidget(self.btn_min)
+        layout.addWidget(self.btn_close)
+
+        # 连接按钮信号
+        self.btn_min.clicked.connect(self.parent.showMinimized)
+        self.btn_close.clicked.connect(self.parent.close)
     
+    def mousePressEvent(self, event):
+        """鼠标按下时记录起始位置"""
+        if event.button() == Qt.LeftButton:
+            self.drag_start_position = event.globalPos()  # 获取全局坐标
+    def mouseMoveEvent(self, event):
+        """鼠标移动时更新窗口位置"""
+        if self.drag_start_position:
+            delta = event.globalPos() - self.drag_start_position  # 计算移动偏移
+            self.parent.move(self.parent.pos() + delta)          # 更新窗口位置
+            self.drag_start_position = event.globalPos()         # 更新起始位置
+    def mouseReleaseEvent(self, event):
+        """鼠标释放时清空记录"""
+        self.drag_start_position = None
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = ImageDetectionUI()
+    window.setWindowFlags(Qt.FramelessWindowHint)
+    titlebar = CustomTitleBar(window)
+    window.setMenuWidget(titlebar)  # 设置自定义标题栏
     window.show()
     sys.exit(app.exec_())
