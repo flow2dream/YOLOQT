@@ -3,13 +3,9 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPixmap
 import cv2
 import numpy as np
-
-
 from core.VideoThread import VideoStreamThread
 
-
 from utils.convert import cv_to_qpixmap
-
 
 class VideoLabel(QLabel):
     _instance = None
@@ -28,20 +24,20 @@ class VideoLabel(QLabel):
             # 创建菜单项
             action1 = QAction("关闭", self)
             # action2 = QAction("重新播放", self)
-            # action3 = QAction("暂停播放", self)
-            # action4 = QAction("继续播放", self)
+            action3 = QAction("暂停播放", self)
+            action4 = QAction("继续播放", self)
             # action5 = QAction("重新选择视频", self)
 
             # 为菜单项添加触发事件
             action1.triggered.connect(self.close_video)
-            
-            # action5.triggered.connect(self.select_video)
+            action3.triggered.connect(self.stop_video)
+            action4.triggered.connect(self.continue_video)
 
             # 将菜单项添加到菜单栏
             self.menu.addAction(action1)
             # self.menu.addAction(action2)
-            # self.menu.addAction(action3)
-            # self.menu.addAction(action4)
+            self.menu.addAction(action3)
+            self.menu.addAction(action4)
             # self.menu.addAction(action5)
 
     def select_video(self):
@@ -84,6 +80,9 @@ class VideoLabel(QLabel):
         if self.video_thread is None:
             QMessageBox.warning(self, "Warning", "请先选择视频！")
             return
+        if self.video_thread.models == []:
+            QMessageBox.warning(self, "Warning", "请先加载模型！")
+            return
         self.video_thread.frame_signal.connect(self.get_predict_frame)
         self.video_thread.finished.connect(self.close_video)
         self.video_thread.start()
@@ -109,9 +108,21 @@ class VideoLabel(QLabel):
         self.video_thread.wait()
         self.hide()
 
-    
     def mousePressEvent(self, event):
         if event.button() == Qt.RightButton:
             # 在鼠标点击位置显示菜单栏
             self.menu.exec_(self.mapToGlobal(event.pos()))
     
+    def stop_video(self):
+        if self.video_thread is not None:
+            self.video_thread.stop_frame()
+    
+    def continue_video(self):
+        if self.video_thread is not None:
+            self.video_thread.continue_frame()
+    
+    def close_label(self):
+        if self.video_thread is not None:
+            self.video_thread.stop()
+            self.video_thread.wait()
+        self.hide()

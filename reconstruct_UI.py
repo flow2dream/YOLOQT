@@ -107,8 +107,6 @@ class ImageDetectionUI(QMainWindow):
         self.parentWidth = self.image_button.width()
         self.parentHeight = self.image_button.height()
         self.image_load:QPushButton = self.image_load
-        # self.image_load.clicked.connect(self.load_image_model)
-        # self.image_load.clicked.connect(SignalLabel.load_weight)
 
         self.image_start:QPushButton = self.image_start # 图片开始检测按钮
         self.image_save:QPushButton = self.image_save # 图片保存按钮
@@ -142,7 +140,6 @@ class ImageDetectionUI(QMainWindow):
         self.moniter_load.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
         self.moniter_start.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
         self.moniter_end.setFixedSize(int(self.parentWidth*0.9), int(self.parentHeight*0.6))
-        # self.moniter_startVideo.hide()
         self.moniter_load.hide()
         self.moniter_start.hide()
         self.moniter_end.hide()
@@ -173,8 +170,9 @@ class ImageDetectionUI(QMainWindow):
         self.select_video.clicked.connect(self.video_label.select_video) # 选择视频
         self.video_load.clicked.connect(self.video_label.load_models) # 视频流模型加载权重
         self.video_start.clicked.connect(self.video_label.start_predict) # 开始视频流
+        self.video_end.clicked.connect(self.video_label.close_video) # 关闭视频流
         self.video_button.clicked.connect(self.showVideo) # 显示视频检测界面
-        
+
         
         self.moniter_load.clicked.connect(self.moniter_label.load_models) # 加载监控模型权重
         self.start_video.clicked.connect(self.moniter_label.open_moniter) # 打开监控
@@ -256,7 +254,7 @@ class ImageDetectionUI(QMainWindow):
                     mo.show()
                 except:
                     pass
-
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = ImageDetectionUI()

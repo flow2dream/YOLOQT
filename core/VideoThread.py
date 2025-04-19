@@ -17,6 +17,7 @@ class VideoStreamThread(QThread):
         self.capture = None
         self.models = []
         self.is_running = False
+        self.is_continue = True
 
     def run(self):
         if not self.video_path:
@@ -26,6 +27,8 @@ class VideoStreamThread(QThread):
             self.capture.release()
             return None
         while self.is_running:
+            if not self.is_continue:
+                continue
             ret, frame = self.capture.read()
             if not ret:
                 print("Error: Could not read frame.")
@@ -66,6 +69,7 @@ class VideoStreamThread(QThread):
             print("Error: Could not open video.")
             return
         self.is_running = True
+        self.is_continue = True
         super().start()
     
     def load_weights(self, models):
@@ -76,6 +80,7 @@ class VideoStreamThread(QThread):
         stop the video stream and release resources.
         """
         self.is_running = False
+        self.is_continue = True
     
     def another_video(self, video_path: str):
         """
@@ -85,4 +90,13 @@ class VideoStreamThread(QThread):
         if self.capture:
             self.capture.release()
             self.capture = None
+
+    def stop_frame(self):
+        """
+        top the stream
+        """
+        self.is_continue = False
+    
+    def continue_frame(self):
+        self.is_continue = True
     
