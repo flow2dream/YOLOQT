@@ -38,7 +38,6 @@ class ImageThread(QThread):
         self.isFolder = mode
 
     def run(self):
-        while True:
             if self.image:
                 image = qpixmap_to_cv(self.image)
                 cls_dict = {}
