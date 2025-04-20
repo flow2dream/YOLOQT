@@ -23,18 +23,20 @@ class VideoLabel(QLabel):
             self.menu = QMenu(self)
             # 创建菜单项
             action1 = QAction("关闭", self)
-            # action2 = QAction("重新播放", self)
+            action2 = QAction("保存结果", self)
             action3 = QAction("暂停播放", self)
             action4 = QAction("继续播放", self)
             # action5 = QAction("重新选择视频", self)
 
             # 为菜单项添加触发事件
             action1.triggered.connect(self.close_video)
+            action2.triggered.connect(self.save_result)
             action3.triggered.connect(self.stop_video)
             action4.triggered.connect(self.continue_video)
 
             # 将菜单项添加到菜单栏
             self.menu.addAction(action1)
+            self.menu.addAction(action2)
             self.menu.addAction(action3)
             self.menu.addAction(action4)
             self.menu.setStyleSheet("""QMenu {
@@ -160,3 +162,8 @@ QMenu::item:disabled {
             self.video_thread.stop()
             self.video_thread.wait()
         self.hide()
+    
+    def save_result(self):
+        self.video_thread.result_thread.setMode("SAVE")
+        self.video_thread.result_thread.get_info_signal.emit({"mode": "SAVE"})
+        self.video_thread.result_thread.start()

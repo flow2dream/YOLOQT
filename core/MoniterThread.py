@@ -4,6 +4,8 @@ import numpy as np
 
 from utils.merge_box import merge_boxes
 from utils.draw_boxes import draw_boxes_on_image
+# from core.ResultThread import ResultThread
+
 
 class MoniterStreamThread(QThread):
 
@@ -50,6 +52,14 @@ class MoniterStreamThread(QThread):
                             cls_dict[tuple(item[:4])] = class_name
                 try:
                     merged_boxes = merge_boxes(cls_dict, threshold=50)
+                    result_thread = ResultThread()
+                    result_thread.get_info_signal.emit({
+                        'type': 'moniter',
+                        'path': None,
+                        'result': {
+                            'cls_dict': cls_dict
+                        }
+                    })
                     annotated_img = draw_boxes_on_image(frame, merged_boxes)
                 except IndexError:
                     annotated_img = frame

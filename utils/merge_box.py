@@ -75,7 +75,7 @@ def merge_boxes(box_dict, threshold=5):
         max_x2 = max([box[2] for box in group_boxes])
         max_y2 = max([box[3] for box in group_boxes])
         merged_box = (min_x1, min_y1, max_x2, max_y2)
-        merged_label = ', '.join(set(group_labels))
+        merged_label = ','.join(set(group_labels))
         final_merged_dict[merged_box] = merged_label
 
     return final_merged_dict

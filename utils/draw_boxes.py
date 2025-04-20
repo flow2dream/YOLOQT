@@ -17,7 +17,7 @@ def draw_boxes_on_image(image, box_dict):
     for box, label in box_dict.items():
         x1, y1, x2, y2 = [int(coord) for coord in box]
         # 根据标签获取颜色，如果标签不在映射中，使用默认颜色（白色）
-        color = color_map.get(label.split(', ')[0], (0, 0, 0))
+        color = color_map.get(label.split(', ')[0], (165, 42, 42))
         # 绘制矩形框
         cv2.rectangle(image, (x1, y1), (x2, y2), color, 2)
         # 绘制标签

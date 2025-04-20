@@ -1,7 +1,7 @@
 import sys, os
 from PyQt5.QtWidgets import (QApplication, QStackedWidget, 
                              QMainWindow, QVBoxLayout,  QPushButton, 
-                             QFileDialog, QLabel, QMessageBox, QWidget, QHBoxLayout)
+                             QLabel, QMessageBox, QWidget, QHBoxLayout)
 from ultralytics import YOLO
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
@@ -15,7 +15,7 @@ from UI.MointerLable import Moniter
 from core.ImageThread import ImageThread
 
 from UI.myButtons import CyberButton
-
+from utils.myImage import myImage
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -43,31 +43,31 @@ class ImageDetectionUI(QMainWindow):
     ]
     def __init__(self):
         super().__init__()
-
         self.load_models()
-        self.imageThread = ImageThread.get_instance(cls=ImageThread)
+        self.imageThread:ImageThread = ImageThread.get_instance(cls=ImageThread)
         self.initOptionUI()
         self.initDisplayUI()
         
-        self.signal_label = SignalLabel.get_instance(cls=SignalLabel, 
+        self.signal_label:SignalLabel = SignalLabel.get_instance(cls=SignalLabel, 
+                                                     root=self,
                                                      parent=self.stack_display.widget(0), 
                                                      selectImage=self.select_image, 
                                                      selectFolder=self.select_foler,
                                                      models=self.models)
-        self.folder_label = FolderLabel.get_instance(cls=FolderLabel,
+        self.folder_label:FolderLabel = FolderLabel.get_instance(cls=FolderLabel,
                                                      parent=self.stack_display.widget(0),
                                                      selectImage=self.select_image,
                                                      selectFolder=self.select_foler)
-        self.video_label = VideoLabel.get_instance(cls=VideoLabel, 
+        self.video_label:VideoLabel = VideoLabel.get_instance(cls=VideoLabel, 
                                                    parent=self.stack_display.widget(1),  
                                                    models=self.models,
                                                    load_button=self.video_load)
-        self.moniter_label = Moniter.get_instance(cls=Moniter,
+        self.moniter_label:Moniter = Moniter.get_instance(cls=Moniter,
                                                   parent=self.stack_display.widget(2),
                                                   models=self.models,
                                                   load_button=self.moniter_load)
         self.initConnection()
-        
+
     def load_models(self):
         self.models = []
         for path in self.model_paths:
@@ -83,17 +83,16 @@ class ImageDetectionUI(QMainWindow):
     def start_image_folder(self):
         self.imageThread.setMode(True)
         result = self.folder_label.getCurrentImage()
-        image = result["image"]
-        if image is None:
-            return
+        image = myImage(result["path"], result["image"])
         self.imageThread.get_image_signal.emit(image)
+        self.imageThread.start()
 
     def start_image_signal(self):
-        self.imageThread.start(False)
+        self.imageThread.setMode(False)
         image = self.signal_label.getCurrentImage()
-        if image is None:
-            return
+        image = myImage(image["path"], image["image"])
         self.imageThread.get_image_signal.emit(image)
+        self.imageThread.start()
 
     def start_image(self):
         if self.imageThread.models == []:
@@ -146,7 +145,8 @@ class ImageDetectionUI(QMainWindow):
         optionLayout.insertWidget(index, self.moniter_button, alignment=Qt.AlignHCenter)
         self.moniter_button.setFixedSize(self.parentWidth, self.parentHeight)
 
-        
+
+
         self.image_load:QPushButton = self.image_load
         self.image_start:QPushButton = self.image_start # 图片开始检测按钮
         self.image_save:QPushButton = self.image_save # 图片保存按钮
@@ -207,6 +207,7 @@ class ImageDetectionUI(QMainWindow):
         self.select_foler.clicked.connect(self.folder_label.select_Folder) # 选择文件夹
         self.image_load.clicked.connect(self.load_image_model) # 加载图片权重
         self.image_start.clicked.connect(self.start_image)
+        self.image_save.clicked.connect(self.imageThread.result_thread.start)
 
         self.select_video.clicked.connect(self.video_label.select_video) # 选择视频
         self.video_load.clicked.connect(self.video_label.load_models) # 视频流模型加载权重

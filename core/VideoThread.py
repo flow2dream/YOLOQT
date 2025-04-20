@@ -1,11 +1,10 @@
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtGui import QPixmap, QImage
 import cv2
 import numpy as np
-import time
 
 from utils.merge_box import merge_boxes
 from utils.draw_boxes import draw_boxes_on_image
+from core.ResultThread import VideoResultThread
 
 class VideoStreamThread(QThread):
     frame_signal = pyqtSignal(np.ndarray)  # 定义一个信号，用于发送每一帧的图像
@@ -18,6 +17,8 @@ class VideoStreamThread(QThread):
         self.models = []
         self.is_running = False
         self.is_continue = True
+        self.result_thread = VideoResultThread()
+        self.mode = "PREDICT"
 
     def run(self):
         if not self.video_path:
@@ -44,10 +45,23 @@ class VideoStreamThread(QThread):
                         cls_dict[tuple(item[:4])] = class_name
             try:
                 merged_boxes = merge_boxes(cls_dict, threshold=50)
+                self.result_thread.get_info_signal.emit({
+                    'type': 'video',
+                    'path': self.video_path,
+                    "mode": self.mode,
+                    'result': {
+                        'cls_dict': cls_dict
+                    }
+                })
+                self.result_thread.start()
                 annotated_img = draw_boxes_on_image(frame, merged_boxes)
             except IndexError:
                 annotated_img = frame
             self.frame_signal.emit(annotated_img)
+            self.mode = "PREDICT"
+        self.result_thread.setMode("SAVE")
+        self.result_thread.get_info_signal.emit({"mode": "SAVE"})
+        self.result_thread.start()
 
     def getFirstFrame(self):
         if not self.capture:
@@ -100,3 +114,8 @@ class VideoStreamThread(QThread):
     def continue_frame(self):
         self.is_continue = True
     
+    def setMode(self, mode):
+        """
+        set the mode of the video stream
+        """
+        self.mode = mode

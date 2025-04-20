@@ -20,6 +20,7 @@ class SignalLabel(QLabel):
     
     @staticmethod
     def get_instance(cls, parent=None, 
+                     root=None,
                      selectImage:QPushButton=None, 
                      selectFolder:QPushButton=None, 
                      models=None):
@@ -29,7 +30,7 @@ class SignalLabel(QLabel):
 
     def getCurrentImage(self):
         if self.image:
-            return self.image
+            return {"path":self.file_path, "image":self.image}
         return None
 
     def showCurrentImage(self, image:str|QPixmap):
@@ -120,9 +121,10 @@ QMenu::item:disabled {
     def select_image(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "选择图片", "./", "Image Files(*.jpg *.png *.jpeg)")
         if file_path:
+            self.file_path = file_path
             self.selectImage.hide()
             self.selectFolder.hide()
-            self.showCurrentImage(file_path)
+            self.showCurrentImage(self.file_path)
     
     def get_model_stauts(self):
         return not self.imageThread.models == []

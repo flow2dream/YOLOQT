@@ -450,7 +450,46 @@ border: 1px solid #2E4372;
             border: 1px solid #2d4d6b;
             padding: 7px 13px 5px 11px;
 }
-</string>
+#bow_head {
+	color: rgb(0, 255, 0);
+	margin: 10px;
+}
+#turn_head {
+	color: rgb(255, 0, 0);
+	margin: 10px;
+}
+#discuss {
+	color: rgb(0, 0, 255);
+	margin: 10px;
+}
+#talk {
+	color: rgb(255, 255, 0);
+	margin: 10px;
+}
+#hand_rise {
+	color: rgb(0, 255, 255);
+	margin: 10px;
+}
+#write {
+	color: rgb(255, 0, 255);
+	margin: 10px;
+}
+#use_phone {
+	color: rgb(128, 0, 128);
+	margin: 10px;
+}
+#reading {
+	color: rgb(255, 165, 0);
+	margin: 10px;
+}
+#lean_table {
+	color: rgb(0, 128, 128);
+	margin: 10px;
+}
+#stand {
+	color: rgb(128, 128, 0);
+	margin: 10px;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
