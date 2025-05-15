@@ -916,7 +916,10 @@ border: 1px solid #2E4372;
               <property name="styleSheet">
                <string notr="true"/>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout">
+              <layout class="QVBoxLayout" name="verticalLayout" stretch="10">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
                <item alignment="Qt::AlignHCenter">
                 <widget class="QPushButton" name="start_video">
                  <property name="sizePolicy">

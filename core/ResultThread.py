@@ -30,11 +30,11 @@ class ImageResultThread(QThread):
         save_dir = os.path.join(BASE_DIR, result['type'])
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
-        save_path = os.path.join(save_dir, base_name.split(".")[0]+".json")
+        self.save_path = os.path.join(save_dir, base_name.split(".")[0]+".json")
         data = []
-        if os.path.exists(save_path):
-            with open(save_path, 'r') as f:
-                data = json.load(f)
+        # if os.path.exists(self.save_path):
+        #     with open(self.save_path, 'r') as f:
+        #         data = json.load(f)
         info = result['result']['cls_dict'].values()
         cls_data_cnt = {}
         for i in info:
@@ -46,13 +46,15 @@ class ImageResultThread(QThread):
             "type": result['type'],
             "result": cls_data_cnt
         }
-        for item in data:
-            if item["path"] == infos["path"]:
-                break
-        else:
-            data.append(infos)
-            with open(save_path, 'w') as f:
-                json.dump(data, f, indent=4)
+        with open(self.save_path, "w", encoding="utf-8") as f:
+            json.dump([infos], f, indent=4)
+        # for item in data:
+        #     if item["path"] == infos["path"]:
+        #         break
+        # else:
+        #     data.append(infos)
+        #     with open(self.save_path, 'w') as f:
+        #         json.dump(data, f, indent=4)
 
     def get_result(self, result:dict):
         # print(result)
@@ -72,6 +74,7 @@ class VideoResultThread(QThread):
             os.makedirs(BASE_DIR)
         self.data = []
         self.result = None
+        self.save_path = ""
 
     def run(self):
         if self.mode == "SAVE":
