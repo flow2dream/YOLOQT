@@ -13,13 +13,18 @@ logger = getLogger()
 POSITIVE = ['discuss', 'hand-raise', 'write', 'read']
 NEGATIVE = ['bow head', 'turn head', 'talk','use phone', 'lean table', 'stand']
 
+# 在文件顶部添加导入
+from PyQt5.QtWidgets import QHBoxLayout  # 添加水平布局
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 class AnalyizeDataUI(QWidget):
     def __init__(self, json_path=None):
         super().__init__()
         self.initUI()
         self.setWindowTitle("数据分析")
         self.resize(800, 600)
-        self.setFixedSize(800, 600)  # 固定窗口大小
+        self.setFixedSize(1000, 800)  # 固定窗口大小
         self.setStyle()  # 添加样式设置
         logger.info("数据分析界面初始化完成")
         self.board = AnalyizeThread(json_path)
@@ -138,24 +143,27 @@ class AnalyizeDataUI(QWidget):
         """)
 
     def initUI(self):
-        # 主布局
-        layout = QVBoxLayout()
-
+        # 修改为主水平布局
+        main_layout = QHBoxLayout()
+        
+        # 左侧垂直布局（原有内容）
+        left_layout = QVBoxLayout()
+        
         # 文件名显示
         self.file_label = QLabel("当前文件：")
         self.file_name = QLineEdit()
         self.file_name.setReadOnly(True)
-        layout.addWidget(self.file_label)
-        layout.addWidget(self.file_name)
-
+        left_layout.addWidget(self.file_label)  # 改为left_layout
+        left_layout.addWidget(self.file_name)   # 改为left_layout
+    
         # 添加总人数输入框
         self.total_label = QLabel("总人数：")
         self.total_input = QLineEdit()
         self.total_input.setPlaceholderText("请输入总人数")
-        layout.addWidget(self.total_label)
-        layout.addWidget(self.total_input)
-
-        # 表格
+        left_layout.addWidget(self.total_label)  # 改为left_layout
+        left_layout.addWidget(self.total_input)  # 改为left_layout
+    
+        # 表格部分
         self.table = QTableWidget(10, 2)
         self.table.horizontalHeader().setVisible(True)
         
@@ -183,8 +191,8 @@ class AnalyizeDataUI(QWidget):
         self.table.setItem(0, 0, QTableWidgetItem("测试数据1"))
         self.table.setItem(0, 1, QTableWidgetItem("测试数据2"))
         
-        layout.addWidget(self.table)
-
+        left_layout.addWidget(self.table)  # 改为left_layout
+    
         # 添加开始分析按钮
         self.analyze_btn = QPushButton("开始分析")
         self.analyze_btn.setStyleSheet("""
@@ -204,20 +212,44 @@ class AnalyizeDataUI(QWidget):
                 background-color: rgba(0, 255, 255, 0.4);
             }
         """)
-        layout.addWidget(self.analyze_btn)
+        left_layout.addWidget(self.analyze_btn)  # 改为left_layout
         self.analyze_btn.clicked.connect(self.start)
-
+    
         # 分析结果
         self.result_label = QLabel("分析结果：")
         self.result_label.setAlignment(Qt.AlignCenter)
-        self.result_label.setWordWrap(True)  # 允许自动换行
-        layout.addWidget(self.result_label)
-
-        # 设置布局间距和边距
-        layout.setSpacing(10)
-        layout.setContentsMargins(15, 15, 15, 15)
+        self.result_label.setWordWrap(True)
+        left_layout.addWidget(self.result_label)  # 改为left_layout
+    
+        # 右侧垂直布局（饼状图）
+        right_layout = QVBoxLayout()
+        self.right_label = QLabel("行为占比分析")
+        self.right_label.setAlignment(Qt.AlignCenter)
+        self.right_label.setStyleSheet("""
+            QLabel {
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+        """)
+        right_layout.addWidget(self.right_label, stretch=1)  # 设置拉伸因子为1
         
-        self.setLayout(layout)
+        # 添加饼状图画布
+        self.figure = Figure(facecolor='#1d363f')  # 透明背景
+        self.canvas = FigureCanvas(self.figure)
+        right_layout.addWidget(self.canvas, stretch=5,alignment=Qt.AlignCenter)
+        
+        # 将左右布局添加到主布局
+        main_layout.addLayout(left_layout, 3)  # 左侧占3/5
+        main_layout.addLayout(right_layout, 2)  # 右侧占2/5
+        
+        # 设置布局间距和边距
+        # main_layout.setSpacing(15)
+        main_layout.setContentsMargins(15, 15, 15, 15)
+        
+        self.setLayout(main_layout)
+
     def start(self):
         # 这里可以添加开始分析的逻辑
         # 例如，获取输入的总人数并进行处理
@@ -239,12 +271,41 @@ class AnalyizeDataUI(QWidget):
         negative_possibility = negative / (positive + negative) * 100
         positive_rate = positive / total_people * 100
         negative_rate = negative / total_people * 100
-
+    
         self.result_label.setText(f"分析结果：\n"
                                   f"积极行为占比：{positive_possibility:.2f}%\n"
                                   f"消极行为占比：{negative_possibility:.2f}%\n"
                                   f"积极行为人数占比：{positive_rate:.2f}%\n"
                                   f"消极行为人数占比：{negative_rate:.2f}%")
+        
+        # 绘制饼状图
+        self.figure.clear()
+        ax = self.figure.add_subplot(111)
+        
+        # 调整图表大小
+        self.figure.set_size_inches(4, 4)  # 设置图表物理尺寸
+        
+        labels = ['积极行为', '消极行为']
+        sizes = [positive_possibility, negative_possibility]
+        colors = ['#66b3ff', '#ff9999']
+        explode = (0.05, 0)
+        
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+               autopct=lambda p: '{:.1f}%'.format(p),
+               shadow=True, startangle=90,
+               textprops={'color': 'white'})
+        ax.axis('equal')
+        
+        # 调整边距
+        self.figure.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+        
+        # 设置图表样式
+        ax.set_title('行为占比分析', fontsize=14, fontproperties='SimHei')
+        for text in ax.texts:
+            text.set_fontproperties('SimHei')
+        
+        # 刷新画布
+        self.canvas.draw()
 
     def set_file_name(self, name):
         self.file_name.setText(name)

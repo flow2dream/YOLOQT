@@ -16,3 +16,6 @@ test.py
 *.png
 valid.py
 yolo11n.pt
+reuslt/
+retrain.py
+analyize_data.py
